@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "test": "jest --runInBand",
-    "test:coverage": "jest --runInBand --coverage"
+    "test:coverage": "jest --runInBand --coverage",
+    "seed:admin": "tsx src/scripts/seedAdmin.ts"
   },
   "keywords": [],
   "author": "",

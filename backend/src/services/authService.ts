@@ -32,3 +32,13 @@ export async function loginUser({ email, password }: Credentials) {
   });
   return { token, user: { id: user.id, email: user.email, role: user.role as Role } };
 }
+
+export async function ensureAdmin({ email, password }: Credentials) {
+  const normalized = email.toLowerCase();
+  const passwordHash = await bcrypt.hash(password, 10);
+  return prisma.user.upsert({
+    where: { email: normalized },
+    update: { role: 'ADMIN', passwordHash },
+    create: { email: normalized, passwordHash, role: 'ADMIN' },
+  });
+}
