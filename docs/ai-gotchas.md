@@ -1,3 +1,6 @@
 # Where the AI got it wrong
 
-_Date, what it suggested, what was wrong, what I changed._
+- **Co-author email collision.** Claude had me copy the assignment doc's example trailer (`AI@users.noreply.github.com`) verbatim. GitHub resolved it to a real user named "ai", who showed up as a contributor on my repo. I rewrote the commit messages with `rebase -i` to use `Co-authored-by: Claude <noreply@anthropic.com>`.
+- **Missing scaffold files.** The first scaffold commit went up without `src/app.ts`, `src/server.ts` and the `tests/` folder, so `jest` and `tsc` both failed on a fresh run. Diagnosed from the error output and fixed in a separate `fix(backend)` commit rather than rewriting history.
+- **TypeScript 7 vs ts-jest.** An unpinned `npm i` pulled TypeScript 7, which `ts-jest` 29 doesn't support (ERESOLVE). Fixed by pinning `typescript@5`. Claude had pinned Express, Prisma and Jest majors but not TypeScript.
+- **Not a failure, but worth noting:** Claude wrote the 12 backend slices without running them. They passed on my machine, which says the tests are consistent with the code, not that the design is right. I reviewed it in the interview-prep pass.
