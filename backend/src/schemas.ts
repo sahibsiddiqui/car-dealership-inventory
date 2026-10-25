@@ -36,3 +36,7 @@ export type VehicleUpdate = z.infer<typeof vehicleUpdateSchema>;
 export const purchaseSchema = z.object({
   quantity: z.number().int().positive().default(1),
 });
+
+export const restockSchema = z.object({
+  quantity: z.number().int().positive(),
+});

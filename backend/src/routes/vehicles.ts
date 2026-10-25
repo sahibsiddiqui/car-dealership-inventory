@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireAdmin } from '../middleware/auth';
-import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema, purchaseSchema } from '../schemas';
+import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema, purchaseSchema, restockSchema } from '../schemas';
 import * as vehicleService from '../services/vehicleService';
 import { asyncHandler } from '../utils/asyncHandler';
 import { validate } from '../utils/validate';
@@ -61,5 +61,16 @@ vehiclesRouter.post(
     if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
     const { quantity } = validate(purchaseSchema, req.body ?? {});
     res.json(await vehicleService.purchaseVehicle(id, quantity));
+  }),
+);
+
+vehiclesRouter.post(
+  '/:id/restock',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const { quantity } = validate(restockSchema, req.body);
+    res.json(await vehicleService.restockVehicle(id, quantity));
   }),
 );

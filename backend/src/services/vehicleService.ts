@@ -53,3 +53,8 @@ export async function purchaseVehicle(id: number, quantity: number) {
   }
   return getVehicleOrThrow(id);
 }
+
+export async function restockVehicle(id: number, quantity: number) {
+  await getVehicleOrThrow(id);
+  return prisma.vehicle.update({ where: { id }, data: { quantity: { increment: quantity } } });
+}
