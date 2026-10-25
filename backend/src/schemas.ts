@@ -27,3 +27,8 @@ export const searchQuerySchema = z.object({
   maxPrice: z.coerce.number().min(0).optional(),
 });
 export type SearchFilters = z.infer<typeof searchQuerySchema>;
+
+export const vehicleUpdateSchema = vehicleInputSchema
+  .partial()
+  .refine((data) => Object.keys(data).length > 0, { message: 'At least one field is required' });
+export type VehicleUpdate = z.infer<typeof vehicleUpdateSchema>;

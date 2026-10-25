@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/auth';
-import { vehicleInputSchema, searchQuerySchema } from '../schemas';
+import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema } from '../schemas';
 import * as vehicleService from '../services/vehicleService';
 import { asyncHandler } from '../utils/asyncHandler';
 import { validate } from '../utils/validate';
+import { HttpError } from '../errors';
 
 export const vehiclesRouter = Router();
 
@@ -29,5 +30,15 @@ vehiclesRouter.get(
   asyncHandler(async (req, res) => {
     const filters = validate(searchQuerySchema, req.query);
     res.json(await vehicleService.searchVehicles(filters));
+  }),
+);
+
+vehiclesRouter.put(
+  '/:id',
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const data = validate(vehicleUpdateSchema, req.body);
+    res.json(await vehicleService.updateVehicle(id, data));
   }),
 );

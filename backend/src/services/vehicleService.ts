@@ -1,5 +1,6 @@
 import { prisma } from '../db';
-import { VehicleInput, SearchFilters } from '../schemas';
+import { VehicleInput, SearchFilters, VehicleUpdate } from '../schemas';
+import { HttpError } from '../errors';
 
 export function createVehicle(data: VehicleInput) {
   return prisma.vehicle.create({ data });
@@ -23,4 +24,15 @@ export function searchVehicles(filters: SearchFilters) {
     },
     orderBy: { id: 'asc' },
   });
+}
+
+export async function getVehicleOrThrow(id: number) {
+  const vehicle = await prisma.vehicle.findUnique({ where: { id } });
+  if (!vehicle) throw new HttpError(404, 'Vehicle not found');
+  return vehicle;
+}
+
+export async function updateVehicle(id: number, data: VehicleUpdate) {
+  await getVehicleOrThrow(id);
+  return prisma.vehicle.update({ where: { id }, data });
 }
