@@ -1,0 +1,61 @@
+﻿
+> backend@1.0.0 test:coverage
+> jest --runInBand --coverage
+
+node.exe : Loaded Prisma config from prisma.config.ts.
+At line:1 char:1
++ & "C:\nvm4w\nodejs/node.exe" "C:\nvm4w\nodejs/node_modules/npm/bin/np ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loaded Prisma c...isma.config.ts.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Prisma config detected, skipping environment variable loading.
+Prisma schema loaded from prisma\schema.prisma
+Datasource "db": SQLite database "test.db" at "file:./test.db"
+
+The SQLite database "test.db" at "file:./test.db" was successfully reset.
+
+Your database is now in sync with your Prisma schema. Done in 17ms
+
+PASS tests/vehicles.search.test.ts
+PASS tests/seedAdmin.test.ts
+PASS tests/auth.login.test.ts
+PASS tests/auth.register.test.ts
+PASS tests/vehicles.restock.test.ts
+PASS tests/vehicles.purchase.test.ts
+PASS tests/vehicles.delete.test.ts
+PASS tests/vehicles.create.test.ts
+PASS tests/vehicles.update.test.ts
+PASS tests/vehicles.list.test.ts
+PASS tests/authMiddleware.test.ts
+--------------------|---------|----------|---------|---------|-------------------
+File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+--------------------|---------|----------|---------|---------|-------------------
+All files           |   96.04 |    84.61 |   96.87 |   97.04 |                   
+ src                |   93.93 |        0 |      75 |   96.87 |                   
+  app.ts            |    92.3 |      100 |       0 |    92.3 | 13                
+  config.ts         |      80 |        0 |     100 |     100 | 3                 
+  db.ts             |     100 |      100 |     100 |     100 |                   
+  errors.ts         |     100 |      100 |     100 |     100 |                   
+  schemas.ts        |     100 |      100 |     100 |     100 |                   
+ src/middleware     |   82.75 |    66.66 |     100 |   84.61 |                   
+  auth.ts           |   95.23 |     87.5 |     100 |     100 | 29                
+  errorHandler.ts   |      50 |       25 |     100 |      50 | 8-12              
+ src/routes         |     100 |       50 |     100 |     100 |                   
+  auth.ts           |     100 |      100 |     100 |     100 |                   
+  vehicles.ts       |     100 |       50 |     100 |     100 | 66                
+ src/services       |     100 |      100 |     100 |     100 |                   
+  authService.ts    |     100 |      100 |     100 |     100 |                   
+  vehicleService.ts |     100 |      100 |     100 |     100 |                   
+ src/utils          |     100 |      100 |     100 |     100 |                   
+  asyncHandler.ts   |     100 |      100 |     100 |     100 |                   
+  parseId.ts        |     100 |      100 |     100 |     100 |                   
+  validate.ts       |     100 |      100 |     100 |     100 |                   
+--------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 11 passed, 11 total
+Tests:       73 passed, 73 total
+Snapshots:   0 total
+Time:        8.333 s, estimated 11 s
+Ran all test suites.
