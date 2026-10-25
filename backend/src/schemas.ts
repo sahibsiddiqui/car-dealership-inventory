@@ -18,3 +18,12 @@ export const vehicleInputSchema = z.object({
   quantity: z.number().int().min(0),
 });
 export type VehicleInput = z.infer<typeof vehicleInputSchema>;
+
+export const searchQuerySchema = z.object({
+  make: z.string().optional(),
+  model: z.string().optional(),
+  category: z.string().optional(),
+  minPrice: z.coerce.number().min(0).optional(),
+  maxPrice: z.coerce.number().min(0).optional(),
+});
+export type SearchFilters = z.infer<typeof searchQuerySchema>;
