@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authenticate } from '../middleware/auth';
+import { authenticate, requireAdmin } from '../middleware/auth';
 import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema } from '../schemas';
 import * as vehicleService from '../services/vehicleService';
 import { asyncHandler } from '../utils/asyncHandler';
@@ -40,5 +40,16 @@ vehiclesRouter.put(
     if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
     const data = validate(vehicleUpdateSchema, req.body);
     res.json(await vehicleService.updateVehicle(id, data));
+  }),
+);
+
+vehiclesRouter.delete(
+  '/:id',
+  requireAdmin,
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    await vehicleService.deleteVehicle(id);
+    res.status(204).send();
   }),
 );

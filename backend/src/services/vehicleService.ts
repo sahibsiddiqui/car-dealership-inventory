@@ -36,3 +36,8 @@ export async function updateVehicle(id: number, data: VehicleUpdate) {
   await getVehicleOrThrow(id);
   return prisma.vehicle.update({ where: { id }, data });
 }
+
+export async function deleteVehicle(id: number) {
+  await getVehicleOrThrow(id);
+  await prisma.vehicle.delete({ where: { id } });
+}
