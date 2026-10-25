@@ -16,3 +16,10 @@ vehiclesRouter.post(
     res.status(201).json(await vehicleService.createVehicle(data));
   }),
 );
+
+vehiclesRouter.get(
+  '/',
+  asyncHandler(async (_req, res) => {
+    res.json(await vehicleService.listVehicles());
+  }),
+);
