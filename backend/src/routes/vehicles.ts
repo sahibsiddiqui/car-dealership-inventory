@@ -1,10 +1,17 @@
+
 import { Router } from 'express';
 import { authenticate, requireAdmin } from '../middleware/auth';
-import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema, purchaseSchema, restockSchema } from '../schemas';
+import {
+  vehicleInputSchema,
+  searchQuerySchema,
+  vehicleUpdateSchema,
+  purchaseSchema,
+  restockSchema,
+} from '../schemas';
 import * as vehicleService from '../services/vehicleService';
 import { asyncHandler } from '../utils/asyncHandler';
 import { validate } from '../utils/validate';
-import { HttpError } from '../errors';
+import { parseId } from '../utils/parseId';
 
 export const vehiclesRouter = Router();
 
@@ -36,8 +43,7 @@ vehiclesRouter.get(
 vehiclesRouter.put(
   '/:id',
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const id = parseId(req.params.id);
     const data = validate(vehicleUpdateSchema, req.body);
     res.json(await vehicleService.updateVehicle(id, data));
   }),
@@ -47,8 +53,7 @@ vehiclesRouter.delete(
   '/:id',
   requireAdmin,
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const id = parseId(req.params.id);
     await vehicleService.deleteVehicle(id);
     res.status(204).send();
   }),
@@ -57,8 +62,7 @@ vehiclesRouter.delete(
 vehiclesRouter.post(
   '/:id/purchase',
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const id = parseId(req.params.id);
     const { quantity } = validate(purchaseSchema, req.body ?? {});
     res.json(await vehicleService.purchaseVehicle(id, quantity));
   }),
@@ -68,8 +72,7 @@ vehiclesRouter.post(
   '/:id/restock',
   requireAdmin,
   asyncHandler(async (req, res) => {
-    const id = Number(req.params.id);
-    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const id = parseId(req.params.id);
     const { quantity } = validate(restockSchema, req.body);
     res.json(await vehicleService.restockVehicle(id, quantity));
   }),
