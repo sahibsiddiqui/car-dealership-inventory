@@ -41,3 +41,15 @@ export async function deleteVehicle(id: number) {
   await getVehicleOrThrow(id);
   await prisma.vehicle.delete({ where: { id } });
 }
+
+export async function purchaseVehicle(id: number, quantity: number) {
+  const { count } = await prisma.vehicle.updateMany({
+    where: { id, quantity: { gte: quantity } },
+    data: { quantity: { decrement: quantity } },
+  });
+  if (count === 0) {
+    await getVehicleOrThrow(id); // throws 404 if the vehicle doesn't exist
+    throw new HttpError(409, 'Insufficient stock');
+  }
+  return getVehicleOrThrow(id);
+}

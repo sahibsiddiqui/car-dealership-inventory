@@ -32,3 +32,7 @@ export const vehicleUpdateSchema = vehicleInputSchema
   .partial()
   .refine((data) => Object.keys(data).length > 0, { message: 'At least one field is required' });
 export type VehicleUpdate = z.infer<typeof vehicleUpdateSchema>;
+
+export const purchaseSchema = z.object({
+  quantity: z.number().int().positive().default(1),
+});

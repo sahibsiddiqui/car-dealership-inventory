@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { authenticate, requireAdmin } from '../middleware/auth';
-import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema } from '../schemas';
+import { vehicleInputSchema, searchQuerySchema, vehicleUpdateSchema, purchaseSchema } from '../schemas';
 import * as vehicleService from '../services/vehicleService';
 import { asyncHandler } from '../utils/asyncHandler';
 import { validate } from '../utils/validate';
@@ -51,5 +51,15 @@ vehiclesRouter.delete(
     if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
     await vehicleService.deleteVehicle(id);
     res.status(204).send();
+  }),
+);
+
+vehiclesRouter.post(
+  '/:id/purchase',
+  asyncHandler(async (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id <= 0) throw new HttpError(400, 'Invalid vehicle id');
+    const { quantity } = validate(purchaseSchema, req.body ?? {});
+    res.json(await vehicleService.purchaseVehicle(id, quantity));
   }),
 );
